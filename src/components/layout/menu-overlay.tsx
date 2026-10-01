@@ -28,13 +28,13 @@ export function MenuOverlay() {
       aria-label="Menu"
       className="fixed inset-0 z-50 flex flex-col overflow-auto bg-background text-ink"
     >
-      <div className="shell flex items-center justify-between gap-6 py-5">
+      <div className="shell flex items-center justify-between gap-6 py-5 phone:py-3">
         <Logo />
         <button
           type="button"
           onClick={() => setOpen(false)}
           aria-label="Close menu"
-          className="-mr-2.5 flex size-16 cursor-pointer items-center justify-center"
+          className="-mr-2.5 flex size-16 cursor-pointer items-center justify-center phone:-mr-1 phone:size-11 [&>svg]:phone:size-9"
         >
           <X size={44} strokeWidth={1} aria-hidden />
         </button>
@@ -89,18 +89,18 @@ export function MenuOverlay() {
           </p>
         </div>
 
-        <div className="flex flex-col gap-8 self-end">
-          <div className="flex flex-col gap-1.5">
+        <div className="flex flex-col gap-8 self-end max-sm:items-center max-sm:text-center">
+          <div className="flex flex-col gap-1.5 max-sm:items-center">
             <Label>Call / WhatsApp</Label>
             <a href={site.phone.tel} className="text-[clamp(28px,3vw,44px)]">
               {site.phone.display}
             </a>
           </div>
-          <div className="flex flex-col gap-1.5">
+          <div className="flex flex-col gap-1.5 max-sm:items-center">
             <Label>Studio</Label>
             <span className="text-lg">{site.location}</span>
           </div>
-          <div className="flex flex-col gap-1.5">
+          <div className="flex flex-col gap-1.5 max-sm:items-center">
             <Label>Services</Label>
             <span className="text-[15px] leading-[1.7] text-body-strong">
               {services.map((s) => s.title).join(" · ")}

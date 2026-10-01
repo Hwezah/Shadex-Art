@@ -20,6 +20,7 @@ export function Header() {
   const overlay = OVERLAY_PATHS.has(pathname);
   const { toggle } = useMenu();
 
+  const [scrolled, setScrolled] = useState(false);
   const [pastHero, setPastHero] = useState(false);
   const [dropOpen, setDropOpen] = useState(false);
   const [shown, setShown] = useState(false);
@@ -62,8 +63,10 @@ export function Header() {
   }, []);
 
   useEffect(() => {
-    if (!overlay) return;
-    const onScroll = () => setPastHero(window.scrollY > window.innerHeight - 90);
+    const onScroll = () => {
+      setScrolled(window.scrollY > 8);
+      setPastHero(overlay && window.scrollY > window.innerHeight - 90);
+    };
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
     window.addEventListener("resize", onScroll);
@@ -73,21 +76,27 @@ export function Header() {
     };
   }, [overlay]);
 
-  const solid = !overlay || pastHero || dropOpen;
+  // transparent at the top → glass once scrolling → solid while the services panel is open.
+  // Over the home hero the glass is a light tint with white text; elsewhere it follows the theme.
+  const mode = dropOpen ? "solid" : !scrolled ? "clear" : overlay && !pastHero ? "glass-photo" : "glass";
+  const onPhoto = overlay && !pastHero && mode !== "solid";
 
   return (
     <>
       <header
         ref={headerRef}
         className={cn(
-          "sticky top-0 z-30 backdrop-blur-md backdrop-saturate-150 transition-[background-color,color,box-shadow] duration-[450ms] ease-out",
-          solid
-            ? "bg-background/96 text-ink shadow-[0_1px_0_var(--line)]"
-            : // Frosted glass over the hero: light tint + blur, hairline edge.
-              "bg-white/10 text-white shadow-[0_1px_0_rgba(255,255,255,0.18)]",
+          "sticky top-0 z-30 transition-[background-color,color,box-shadow,backdrop-filter] duration-[450ms] ease-out",
+          onPhoto ? "text-white" : "text-ink",
+          {
+            clear: "bg-transparent shadow-none backdrop-blur-none",
+            "glass-photo": "bg-white/10 shadow-[0_1px_0_rgba(255,255,255,0.18)] backdrop-blur-md backdrop-saturate-150",
+            glass: "bg-background/65 shadow-[0_1px_0_var(--line)] backdrop-blur-md backdrop-saturate-150",
+            solid: "bg-background shadow-[0_1px_0_var(--line)] backdrop-blur-md",
+          }[mode],
         )}
       >
-        <div className="shell flex items-center justify-between gap-6 py-5">
+        <div className="shell flex items-center justify-between gap-6 py-5 phone:py-3">
           <Logo />
           <div className="flex items-center gap-[clamp(20px,4vw,72px)]">
             <nav
