@@ -63,7 +63,7 @@ export function TypedWord({ items, className }: { items: TypedWordItem[]; classN
       ))}
       <span
         aria-hidden
-        className="col-start-1 row-start-1 justify-self-start whitespace-nowrap"
+        className="col-start-1 row-start-1 justify-self-start whitespace-nowrap max-sm:justify-self-center"
         style={{ color }}
       >
         {word.slice(0, count)}

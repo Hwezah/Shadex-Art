@@ -34,7 +34,9 @@ export default function StudioPage() {
             as="h1"
             className="max-w-[760px] text-[clamp(38px,5vw,76px)] leading-[1.05] font-normal tracking-[-0.015em] text-balance"
           >
-            Where paintings are made and rooms are <TypedWord items={HERO_WORDS} />
+            Where paintings are made and rooms are
+            <br />
+            <TypedWord items={HERO_WORDS} />
           </Reveal>
           <Reveal as="p" index={1} className="max-w-[480px] text-[clamp(15px,1.2vw,17px)] leading-[1.7] text-pretty">
             Our studio paints original artwork and designs complete interiors — gypsum ceilings, walls, colour and décor
