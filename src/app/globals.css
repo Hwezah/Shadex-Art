@@ -129,6 +129,13 @@
   --radius-xl: var(--radius);
 }
 
+/* Typewriter caret blink. */
+@keyframes caret {
+  50% {
+    opacity: 0;
+  }
+}
+
 /* Page container: 1440 max, fluid side gutter. */
 @utility shell {
   width: 100%;

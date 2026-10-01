@@ -3,6 +3,7 @@ import Link from "next/link";
 import { HeroBackdrop } from "@/components/hero-backdrop";
 import { Media } from "@/components/motion/media";
 import { Reveal } from "@/components/motion/reveal";
+import { TypedWord } from "@/components/motion/typed-word";
 import { ArrowLink } from "@/components/ui/arrow-link";
 import { Button } from "@/components/ui/button";
 import { pexels } from "@/lib/images";
@@ -11,6 +12,15 @@ import { areas, team, values } from "@/lib/data/studio";
 import { cn } from "@/lib/utils";
 
 const section = "py-[clamp(80px,9vw,140px)]";
+
+/** Hero headline: "…rooms are ___" cycles through these, each in its own colour. */
+const HERO_WORDS = [
+  { word: "finished", color: "#f2c14e" },
+  { word: "transformed", color: "#7fd8be" },
+  { word: "reimagined", color: "#f4978e" },
+  { word: "styled", color: "#9bb7ff" },
+  { word: "perfected", color: "#e7a3ff" },
+];
 
 export default function StudioPage() {
   return (
@@ -24,7 +34,7 @@ export default function StudioPage() {
             as="h1"
             className="max-w-[760px] text-[clamp(38px,5vw,76px)] leading-[1.05] font-normal tracking-[-0.015em] text-balance"
           >
-            Where paintings are made and rooms are finished
+            Where paintings are made and rooms are <TypedWord items={HERO_WORDS} />
           </Reveal>
           <Reveal as="p" index={1} className="max-w-[480px] text-[clamp(15px,1.2vw,17px)] leading-[1.7] text-pretty">
             Our studio paints original artwork and designs complete interiors — gypsum ceilings, walls, colour and décor
