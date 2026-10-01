@@ -2,6 +2,7 @@ import { MessageCircle, Phone } from "lucide-react";
 import Link from "next/link";
 import { FacebookIcon, InstagramIcon } from "@/components/icons/brand-icons";
 import { Button } from "@/components/ui/button";
+import { WhatsAppLink } from "@/components/whatsapp-link";
 import { navLinks, site } from "@/lib/data/site";
 import { BackToTop } from "./back-to-top";
 import { Logo } from "./logo";
@@ -30,7 +31,12 @@ export function Footer() {
             </nav>
             <div className="flex gap-[22px]">
               {socials.map((s) => (
-                <a key={s.label} href={s.href} aria-label={s.label}>
+                <a
+                  key={s.label}
+                  href={s.href}
+                  aria-label={s.label}
+                  {...(s.href.startsWith("https://") && { target: "_blank", rel: "noopener noreferrer" })}
+                >
                   {s.icon}
                 </a>
               ))}
@@ -51,9 +57,9 @@ export function Footer() {
             </Button>
           </div>
           <div className="flex flex-col gap-3.5 text-[12.5px] leading-[1.7] tracking-[0.04em] max-sm:items-center">
-            <a href={site.phone.whatsapp} className="self-start border-b border-ink whitespace-nowrap max-sm:self-center">
+            <WhatsAppLink className="self-start border-b border-ink whitespace-nowrap max-sm:self-center">
               WHATSAPP US
-            </a>
+            </WhatsAppLink>
             <a href={site.phone.tel} className="self-start whitespace-nowrap max-sm:self-center">
               {site.phone.display}
             </a>

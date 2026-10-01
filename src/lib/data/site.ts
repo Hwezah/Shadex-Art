@@ -6,7 +6,9 @@ export const site = {
   phone: {
     display: "0702 836 405",
     tel: "tel:+256702836405",
-    whatsapp: "https://wa.me/256702836405",
+    whatsapp: `https://wa.me/256702836405?text=${encodeURIComponent(
+      "Hello Shadex Studio! I'd like to ask about a project.",
+    )}`,
   },
   location: "Kireka, Kampala — Uganda",
   // TODO: replace with the client's real profiles.

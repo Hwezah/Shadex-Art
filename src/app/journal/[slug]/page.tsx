@@ -5,6 +5,7 @@ import { Media } from "@/components/motion/media";
 import { Reveal } from "@/components/motion/reveal";
 import { ArrowLink } from "@/components/ui/arrow-link";
 import { PostCard } from "@/components/post-card";
+import { WhatsAppLink } from "@/components/whatsapp-link";
 import { getPost, postIntro, posts, relatedPosts } from "@/lib/data/posts";
 import { site } from "@/lib/data/site";
 
@@ -65,9 +66,9 @@ export default async function ArticlePage({ params }: PageProps<"/journal/[slug]
         {s2 && <Section {...s2} />}
         <aside className="flex flex-col items-center gap-3.5 bg-alt p-7 text-center">
           <span className="text-[15px] font-normal">Planning a project like this?</span>
-          <a href={site.phone.whatsapp} className="inline-flex items-center gap-1.5 border-b border-ink pb-0.5 text-[13px]">
+          <WhatsAppLink className="inline-flex items-center gap-1.5 border-b border-ink pb-0.5 text-[13px]">
             Talk to Shadex on {site.phone.display} <ArrowRight size={15} strokeWidth={1.5} aria-hidden />
-          </a>
+          </WhatsAppLink>
         </aside>
       </article>
 

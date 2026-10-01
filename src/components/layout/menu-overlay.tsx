@@ -4,6 +4,7 @@ import { ChevronDown, X } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
+import { WhatsAppLink } from "@/components/whatsapp-link";
 import { useMenu } from "@/context/menu-context";
 import { navLinks, site } from "@/lib/data/site";
 import { serviceHref, services } from "@/lib/data/services";
@@ -108,7 +109,7 @@ export function MenuOverlay() {
           {/* Phone portrait: stacked, centred, 80vw each. */}
           <div className="flex flex-wrap gap-3 max-sm:flex-col max-sm:items-center">
             <Button asChild variant="solid" size="lg" className="max-sm:w-[80vw]">
-              <a href={site.phone.whatsapp}>Message On WhatsApp</a>
+              <WhatsAppLink>Message On WhatsApp</WhatsAppLink>
             </Button>
             <Button asChild variant="outline" size="lg" className="max-sm:w-[80vw]">
               <a href={site.phone.tel}>Call Shadex Studio!</a>
