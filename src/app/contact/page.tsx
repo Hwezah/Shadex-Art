@@ -74,7 +74,7 @@ export default function ContactPage() {
       {/* Form + next steps */}
       <section className="bg-alt">
         <div className="shell grid grid-cols-1 items-start gap-[clamp(32px,5vw,80px)] py-[clamp(56px,7vw,110px)] lg:grid-cols-[minmax(0,1.5fr)_minmax(0,1fr)]">
-          <div id="enquiry" className="scroll-mt-28 bg-background p-[clamp(22px,3.4vw,56px)]">
+          <div id="enquiry" className="scroll-mt-28 bg-background p-[clamp(16px,3.4vw,56px)]">
             <div className="mb-9 flex flex-col gap-3 max-sm:items-center max-sm:text-center">
               <span className="eyebrow text-muted">Send an enquiry</span>
               <h2 className="text-[clamp(24px,2.2vw,32px)] leading-[1.25]">Tell us about your project</h2>

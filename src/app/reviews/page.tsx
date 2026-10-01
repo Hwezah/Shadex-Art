@@ -30,7 +30,7 @@ export default function ReviewsPage() {
       {reviews.map((r) =>
         r.image ? (
           <section key={r.who} className="bg-alt">
-            <div className="mx-auto grid max-w-[1100px] grid-cols-1 items-center gap-[clamp(32px,5vw,80px)] px-[clamp(20px,3vw,40px)] py-[clamp(64px,8vw,110px)] md:grid-cols-2">
+            <div className="mx-auto grid max-w-[1100px] grid-cols-1 items-center gap-[clamp(32px,5vw,80px)] px-(--gutter) py-[clamp(64px,8vw,110px)] md:grid-cols-2">
               <Media
                 src={r.image}
                 alt=""
@@ -48,7 +48,7 @@ export default function ReviewsPage() {
           </section>
         ) : (
           <section key={r.who}>
-            <figure className="mx-auto flex max-w-[760px] flex-col items-center gap-6 px-[clamp(20px,3vw,40px)] py-[clamp(64px,8vw,110px)] text-center">
+            <figure className="mx-auto flex max-w-[760px] flex-col items-center gap-6 px-(--gutter) py-[clamp(64px,8vw,110px)] text-center">
               <QuoteMark />
               <Reveal as="p" className="text-[clamp(15px,1.3vw,18px)] leading-[1.8] text-pretty">
                 {r.text}

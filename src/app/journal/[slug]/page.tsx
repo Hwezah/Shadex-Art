@@ -42,7 +42,7 @@ export default async function ArticlePage({ params }: PageProps<"/journal/[slug]
 
   return (
     <>
-      <article className="mx-auto flex max-w-[760px] flex-col gap-[clamp(28px,3vw,40px)] px-[clamp(20px,3vw,40px)] pt-[clamp(40px,5vw,72px)] pb-[clamp(56px,7vw,96px)]">
+      <article className="mx-auto flex max-w-[760px] flex-col gap-[clamp(28px,3vw,40px)] px-(--gutter) pt-[clamp(40px,5vw,72px)] pb-[clamp(56px,7vw,96px)]">
         <header className="flex flex-col items-center gap-3.5 text-center">
           <span className="text-[11px] tracking-[0.18em] text-muted uppercase">
             {p.tag} · {p.date}
