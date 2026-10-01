@@ -1,12 +1,13 @@
 "use client";
 
-import { ChevronDown, X } from "lucide-react";
+import { ArrowRight, ChevronDown, X } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { WhatsAppLink } from "@/components/whatsapp-link";
 import { useMenu } from "@/context/menu-context";
-import { navLinks, site } from "@/lib/data/site";
+import { postHref, posts } from "@/lib/data/posts";
+import { footerLinks, journalLink, site } from "@/lib/data/site";
 import { serviceHref, services } from "@/lib/data/services";
 import { cn } from "@/lib/utils";
 import { Logo } from "./logo";
@@ -46,7 +47,7 @@ export function MenuOverlay() {
             aria-label="Mobile"
             className="flex flex-col items-start gap-4 border-b border-line pb-8 text-[32px] nav:hidden"
           >
-            {navLinks.map((l) =>
+            {footerLinks.map((l) =>
               l.key === "services" ? (
                 // Services expands its list in place rather than navigating.
                 <div key={l.key} className="flex flex-col items-start">
@@ -87,6 +88,26 @@ export function MenuOverlay() {
             ceilings and partitions, painting and finishes, artworks and décor — for homes, offices and shops across
             Kampala.
           </p>
+
+          {/* Journal lives here rather than in the header (phones get it in the link list above). */}
+          <div className="hidden flex-col gap-4 border-t border-line pt-7 nav:flex">
+            <div className="flex items-baseline justify-between gap-4">
+              <Label>From the Journal</Label>
+              <Link href={journalLink.href} className="inline-flex items-center gap-1.5 text-[13px] font-normal">
+                All articles <ArrowRight size={14} strokeWidth={1.5} aria-hidden />
+              </Link>
+            </div>
+            <ul className="flex flex-col">
+              {posts.slice(0, 3).map((p) => (
+                <li key={p.slug} className="border-b border-line last:border-b-0">
+                  <Link href={postHref(p.slug)} className="group flex items-baseline justify-between gap-6 py-3">
+                    <span className="text-[17px] leading-[1.35] transition-colors group-hover:text-accent">{p.title}</span>
+                    <span className="shrink-0 text-[11px] tracking-[0.16em] text-muted uppercase">{p.tag}</span>
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
         </div>
 
         <div className="flex flex-col gap-8 self-end max-sm:items-center max-sm:text-center">

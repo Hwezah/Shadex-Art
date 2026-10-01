@@ -3,7 +3,7 @@ import Link from "next/link";
 import { FacebookIcon, InstagramIcon } from "@/components/icons/brand-icons";
 import { Button } from "@/components/ui/button";
 import { WhatsAppLink } from "@/components/whatsapp-link";
-import { navLinks, site } from "@/lib/data/site";
+import { contactHref, footerLinks, site } from "@/lib/data/site";
 import { BackToTop } from "./back-to-top";
 import { Logo } from "./logo";
 
@@ -23,7 +23,7 @@ export function Footer() {
           <div className="h-px bg-line" />
           <div className="flex flex-wrap justify-between gap-5 text-[12.5px] max-sm:flex-col max-sm:items-center">
             <nav aria-label="Footer" className="flex flex-wrap gap-[clamp(18px,3vw,40px)] max-sm:justify-center">
-              {navLinks.map((l) => (
+              {footerLinks.map((l) => (
                 <Link key={l.key} href={l.href}>
                   {l.label}
                 </Link>
@@ -51,9 +51,8 @@ export function Footer() {
               <br />
               Call Shadex.
             </h2>
-            {/* TODO: swap for a call-back form once a submission target exists. */}
             <Button asChild variant="outline" size="sm" solo className="self-start">
-              <a href={site.phone.tel}>Request a call back</a>
+              <Link href={`${contactHref}?intent=callback#enquiry`}>Request a call back</Link>
             </Button>
           </div>
           <div className="flex flex-col gap-3.5 text-[12.5px] leading-[1.7] tracking-[0.04em] max-sm:items-center">

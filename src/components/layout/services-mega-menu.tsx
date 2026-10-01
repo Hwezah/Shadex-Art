@@ -6,6 +6,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { EASE_SOFT } from "@/components/motion/easing";
 import { serviceHref, services } from "@/lib/data/services";
+import { contactHref } from "@/lib/data/site";
 import { cn } from "@/lib/utils";
 
 /**
@@ -60,7 +61,7 @@ export function ServicesMegaMenu({
                     Design, gypsum work, painting and art under one roof — planned together, finished properly.
                   </p>
                 </div>
-                <Link href="#contact" onClick={onClose} className="inline-flex items-center gap-2.5 self-start text-sm font-normal">
+                <Link href={`${contactHref}#enquiry`} onClick={onClose} className="inline-flex items-center gap-2.5 self-start text-sm font-normal">
                   <span className="border-b border-current pb-[3px]">Book a site visit</span>
                   <ArrowRight size={15} strokeWidth={1.5} aria-hidden />
                 </Link>

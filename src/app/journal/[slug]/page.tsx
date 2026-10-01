@@ -1,13 +1,15 @@
 import type { Metadata } from "next";
 import { ArrowRight } from "lucide-react";
+import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Media } from "@/components/motion/media";
 import { Reveal } from "@/components/motion/reveal";
 import { ArrowLink } from "@/components/ui/arrow-link";
 import { PostCard } from "@/components/post-card";
+import { Button } from "@/components/ui/button";
 import { WhatsAppLink } from "@/components/whatsapp-link";
 import { getPost, postIntro, posts, relatedPosts } from "@/lib/data/posts";
-import { site } from "@/lib/data/site";
+import { contactHref, site } from "@/lib/data/site";
 
 export const dynamicParams = false;
 
@@ -66,8 +68,13 @@ export default async function ArticlePage({ params }: PageProps<"/journal/[slug]
         {s2 && <Section {...s2} />}
         <aside className="flex flex-col items-center gap-3.5 bg-alt p-7 text-center">
           <span className="text-[15px] font-normal">Planning a project like this?</span>
-          <WhatsAppLink className="inline-flex items-center gap-1.5 border-b border-ink pb-0.5 text-[13px]">
-            Talk to Shadex on {site.phone.display} <ArrowRight size={15} strokeWidth={1.5} aria-hidden />
+          <Button asChild variant="solid" size="md" solo>
+            <Link href={`${contactHref}#enquiry`}>
+              Send an enquiry <ArrowRight size={15} strokeWidth={1.5} aria-hidden />
+            </Link>
+          </Button>
+          <WhatsAppLink className="border-b border-current pb-0.5 text-[13px] text-body">
+            or WhatsApp {site.phone.display}
           </WhatsAppLink>
         </aside>
       </article>

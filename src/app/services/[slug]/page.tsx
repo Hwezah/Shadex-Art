@@ -7,6 +7,7 @@ import { Reveal } from "@/components/motion/reveal";
 import { ArrowLink } from "@/components/ui/arrow-link";
 import { Button } from "@/components/ui/button";
 import { getService, serviceHref, services } from "@/lib/data/services";
+import { contactHref } from "@/lib/data/site";
 
 export const dynamicParams = false;
 
@@ -80,7 +81,7 @@ export default async function ServicePage({ params }: PageProps<"/services/[slug
               ))}
             </ol>
             <Button asChild variant="outline" size="md" solo className="self-start">
-              <Link href="#contact">Get a quote</Link>
+              <Link href={`${contactHref}?service=${p.slug}#enquiry`}>Get a quote</Link>
             </Button>
           </div>
         </div>
@@ -129,7 +130,7 @@ export default async function ServicePage({ params }: PageProps<"/services/[slug
           <Reveal as="h2" className="text-[clamp(26px,2.6vw,36px)] leading-[1.3]">
             Why clients choose Shadex
           </Reveal>
-          <ArrowLink href="#contact" className="text-[13px]">
+          <ArrowLink href={contactHref} className="text-[13px]">
             Contact us
           </ArrowLink>
         </div>

@@ -8,6 +8,7 @@ import { ArrowLink } from "@/components/ui/arrow-link";
 import { Button } from "@/components/ui/button";
 import { pexels } from "@/lib/images";
 import { serviceHref } from "@/lib/data/services";
+import { contactHref } from "@/lib/data/site";
 import { areas, team, values } from "@/lib/data/studio";
 import { cn } from "@/lib/utils";
 
@@ -45,7 +46,7 @@ export default function StudioPage() {
           </Reveal>
           <div className="mt-2 flex flex-wrap gap-3.5 max-sm:justify-center">
             <Button asChild variant="light" size="lg">
-              <Link href="#contact">Book a site visit</Link>
+              <Link href={`${contactHref}#enquiry`}>Book a site visit</Link>
             </Button>
             <Button asChild variant="outline-light" size="lg">
               <Link href={serviceHref("artworks-decor")}>See our artworks</Link>
@@ -126,7 +127,7 @@ export default function StudioPage() {
           <Reveal as="h2" className="text-[clamp(28px,2.8vw,42px)] leading-[1.2] font-normal">
             How we work. From idea to finished room.
           </Reveal>
-          <ArrowLink href="#contact" underline>
+          <ArrowLink href={contactHref} underline>
             Contact us
           </ArrowLink>
         </div>
@@ -195,7 +196,7 @@ export default function StudioPage() {
                 Homes, apartments, offices, shops and restaurants. If you are unsure whether we cover your area, call us
                 — we are happy to arrange a free site visit.
               </Reveal>
-              <ArrowLink href="#contact" underline>
+              <ArrowLink href={contactHref} underline>
                 Contact us
               </ArrowLink>
             </div>
