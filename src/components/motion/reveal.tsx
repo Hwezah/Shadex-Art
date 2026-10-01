@@ -1,7 +1,7 @@
 "use client";
 
 import { animate, useInView, useReducedMotion } from "motion/react";
-import { createElement, useEffect, useRef, type CSSProperties } from "react";
+import { createElement, useEffect, useRef, useState, type CSSProperties } from "react";
 import { EASE_CURTAIN, EASE_SOFT } from "./easing";
 import { INTRO_MS, useIntroStart } from "./intro";
 
@@ -17,28 +17,32 @@ export type RevealOptions = {
   /** Seconds. Defaults: 1.4 image, 1.1 text. */
   duration?: number;
   ease?: readonly [number, number, number, number];
+  /**
+   * Hold the reveal until content is ready (e.g. the photo has decoded), so a
+   * wipe never opens onto an empty frame. Falls back after 2.5s in view.
+   */
+  ready?: boolean;
 };
 
-const CLIP_HIDDEN: Record<WipeDirection, string> = {
-  down: "inset(0% 0% 100% 0%)",
-  up: "inset(100% 0% 0% 0%)",
+const READY_TIMEOUT_MS = 2500;
+
+/*
+ * Image wipe as a transform-only "mask slide": the frame layer slides in from
+ * off-edge while its content slides the opposite way, so the photo appears to
+ * stay still while an edge sweeps across it. Transforms run on the compositor
+ * (no per-frame repaint), which avoids the flicker a full-screen clip-path
+ * animation causes on some devices — especially under the glass header.
+ */
+const FRAME_FROM: Record<WipeDirection, string> = {
+  down: "translate3d(0px,-100%,0px)",
+  up: "translate3d(0px,100%,0px)",
 };
-const CLIP_SHOWN = "inset(0% 0% 0% 0%)";
-
-function hiddenStyle(kind: Kind, direction: WipeDirection): CSSProperties {
-  return kind === "image"
-    ? { clipPath: CLIP_HIDDEN[direction] }
-    : { opacity: 0, transform: "translate3d(0px,24px,0px)" };
-}
-
-// Explicit [from, to] keyframes with identical structure. Without a `from`,
-// Motion reads the browser-normalised value (e.g. "inset(0px 0px 100%)"),
-// can't interpolate it against the target, and the frame never opens.
-function keyframes(kind: Kind, direction: WipeDirection): Record<string, (string | number)[]> {
-  return kind === "image"
-    ? { clipPath: [CLIP_HIDDEN[direction], CLIP_SHOWN] }
-    : { opacity: [0, 1], transform: ["translate3d(0px,24px,0px)", "translate3d(0px,0px,0px)"] };
-}
+const CONTENT_FROM: Record<WipeDirection, string> = {
+  down: "translate3d(0px,100%,0px)",
+  up: "translate3d(0px,-100%,0px)",
+};
+const AT_REST = "translate3d(0px,0%,0px)";
+const TEXT_FROM = "translate3d(0px,24px,0px)";
 
 /**
  * Scroll reveal ported from shadex-motion.js.
@@ -47,24 +51,32 @@ function keyframes(kind: Kind, direction: WipeDirection): Record<string, (string
  * - anything on screen at page open reveals after a short settle, building
  *   top-to-bottom / left-to-right by its viewport position
  * - never re-hides; skipped entirely under prefers-reduced-motion
+ *
+ * `ref` is observed for visibility and is never transformed itself.
+ * For images, `frameRef`/`contentRef` take the two counter-moving layers.
  */
-export function useReveal<T extends HTMLElement, A extends HTMLElement = T>(
+export function useReveal<T extends HTMLElement>(
   kind: Kind,
-  { index = 0, direction = "down", duration, ease }: RevealOptions = {},
+  { index = 0, direction = "down", duration, ease, ready = true }: RevealOptions = {},
 ) {
-  /** Observed for visibility. Must not carry the hidden clip-path itself:
-   *  IntersectionObserver honours the target's own clip-path, so a fully
-   *  clipped element never reports as in view. */
   const ref = useRef<T>(null);
-  /** Optional separate element that receives the animation (and `style`). */
-  const animRef = useRef<A>(null);
+  const frameRef = useRef<HTMLDivElement>(null);
+  const contentRef = useRef<HTMLDivElement>(null);
   const inView = useInView(ref, { once: true, margin: "0px 0px -10% 0px", amount: 0.05 });
   const reduce = useReducedMotion();
   const introStart = useIntroStart();
 
+  const [timedOut, setTimedOut] = useState(false);
   useEffect(() => {
-    const el = animRef.current ?? ref.current;
-    if (!el || !inView || reduce) return;
+    if (!inView || ready) return;
+    const t = setTimeout(() => setTimedOut(true), READY_TIMEOUT_MS);
+    return () => clearTimeout(t);
+  }, [inView, ready]);
+  const go = inView && (ready || timedOut);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el || !go || reduce) return;
     let delay = Math.min(index, 4) * 0.11 + (kind === "text" ? 0.08 : 0);
     const since = performance.now() - introStart;
     if (since < INTRO_MS + 600) {
@@ -74,14 +86,31 @@ export function useReveal<T extends HTMLElement, A extends HTMLElement = T>(
         Math.min(Math.max(r.top, 0) / window.innerHeight, 1) * 0.42 +
         (r.left / window.innerWidth) * 0.16;
     }
-    animate(el, keyframes(kind, direction), {
+    const timing = {
       duration: duration ?? (kind === "image" ? 1.4 : 1.1),
       ease: ease ?? (kind === "image" ? EASE_CURTAIN : EASE_SOFT),
       delay,
-    });
-  }, [inView, reduce, index, kind, introStart, direction, duration, ease]);
+    };
+    // Explicit [from, to] keyframes: Motion can't interpolate from the
+    // browser-normalised computed value when the shapes differ.
+    if (kind === "text") {
+      animate(el, { opacity: [0, 1], transform: [TEXT_FROM, AT_REST] }, timing);
+      return;
+    }
+    if (frameRef.current) animate(frameRef.current, { transform: [FRAME_FROM[direction], AT_REST] }, timing);
+    if (contentRef.current) animate(contentRef.current, { transform: [CONTENT_FROM[direction], AT_REST] }, timing);
+  }, [go, reduce, index, kind, introStart, direction, duration, ease]);
 
-  return { ref, animRef, style: reduce ? undefined : hiddenStyle(kind, direction) };
+  const hidden = !reduce;
+  return {
+    ref,
+    frameRef,
+    contentRef,
+    /** Text: applied to the element itself. */
+    style: hidden && kind === "text" ? ({ opacity: 0, transform: TEXT_FROM } as CSSProperties) : undefined,
+    frameStyle: hidden && kind === "image" ? ({ transform: FRAME_FROM[direction] } as CSSProperties) : undefined,
+    contentStyle: hidden && kind === "image" ? ({ transform: CONTENT_FROM[direction] } as CSSProperties) : undefined,
+  };
 }
 
 type RevealTag = "h1" | "h2" | "h3" | "p" | "span" | "div" | "figcaption";
