@@ -45,12 +45,12 @@ export function MenuOverlay() {
         <div className="flex max-w-[560px] flex-col gap-7">
           <nav
             aria-label="Mobile"
-            className="flex flex-col items-start gap-4 border-b border-line pb-8 text-[32px] nav:hidden"
+            className="flex flex-col items-start gap-4 border-b border-line pb-8 text-[32px] nav:hidden max-sm:items-center"
           >
             {footerLinks.map((l) =>
               l.key === "services" ? (
                 // Services expands its list in place rather than navigating.
-                <div key={l.key} className="flex flex-col items-start">
+                <div key={l.key} className="flex flex-col items-start max-sm:items-center">
                   <button
                     type="button"
                     onClick={() => setServicesOpen((o) => !o)}
@@ -66,7 +66,7 @@ export function MenuOverlay() {
                     />
                   </button>
                   {servicesOpen && (
-                    <ul className="mt-3 flex flex-col gap-2.5 border-l border-line pl-4 text-lg">
+                    <ul className="mt-3 flex flex-col gap-2.5 border-l border-line pl-4 text-lg max-sm:items-center max-sm:border-l-0 max-sm:pl-0">
                       {services.map((sv) => (
                         <li key={sv.slug}>
                           <Link href={serviceHref(sv.slug)}>{sv.title}</Link>
