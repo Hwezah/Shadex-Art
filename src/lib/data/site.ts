@@ -2,7 +2,7 @@ export const site = {
   name: "Shadex Art & Interior Design",
   shortName: "Shadex",
   description:
-    "An interior design and finishing studio in Kireka. Complete interiors — gypsum ceilings and partitions, painting and finishes, artworks and décor — for homes, offices and shops across Kampala.",
+    "An art and interior design studio in Kireka. Complete interiors — gypsum ceilings and partitions, painting and finishes, artworks and décor — for homes, offices and shops across Kampala.",
   phone: {
     display: "0702 836 405",
     tel: "tel:+256702836405",
