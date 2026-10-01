@@ -16,11 +16,11 @@ pnpm lint
 ```
 src/
   app/                      routes: /, /services/[slug], /portfolio(/[slug]), /reviews, /journal(/[slug])
-    template.tsx            page-open curtain (replays on every navigation)
+    template.tsx            resets first-screen reveal timing on every navigation
   components/
     layout/                 header, full-screen menu, footer, logo
-    motion/                 intro curtain, <Reveal> (text fade-up), <Media> (wipe + parallax image)
-    ui/                     shadcn-style primitives (Button, ArrowLink)
+    motion/                 <Reveal> (text fade-up), <Media> (wipe + parallax image), easings
+    ui/                     shadcn-style primitives (Button, Switch, ArrowLink)
   context/menu-context.tsx  menu open state + body scroll lock
   context/theme-context.tsx light/dark theme (data-theme on <html>, saved in localStorage)
   lib/data/                 typed content: services, projects, posts, reviews, studio, site
