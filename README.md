@@ -20,7 +20,7 @@ src/
   components/
     layout/                 header, full-screen menu, footer, logo
     motion/                 <Reveal> (text fade-up), <Media> (wipe + parallax image), easings
-    ui/                     shadcn-style primitives (Button, Switch, ArrowLink)
+    ui/                     shadcn-style primitives (Button, ArrowLink)
   context/menu-context.tsx  menu open state + body scroll lock
   context/theme-context.tsx light/dark theme (data-theme on <html>, saved in localStorage)
   lib/data/                 typed content: services, projects, posts, reviews, studio, site
