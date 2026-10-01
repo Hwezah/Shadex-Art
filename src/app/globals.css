@@ -1,0 +1,123 @@
+@import "tailwindcss";
+
+/*
+ * Breakpoints follow the design handoff:
+ *   sm  ≥601  (≤600 = phone portrait: centred text, stacked asymmetric grids)
+ *   nav ≥641  (inline header nav visible)
+ *   md  ≥761  (2/3-item grids go multi-column)
+ *   lg  ≥1001 (4-item and archive grids go to 4 columns)
+ */
+@theme {
+  --breakpoint-*: initial;
+  --breakpoint-sm: 601px;
+  --breakpoint-nav: 641px;
+  --breakpoint-navwide: 821px;
+  --breakpoint-md: 761px;
+  --breakpoint-lg: 1001px;
+  --breakpoint-xl: 1440px;
+
+  --font-sans: var(--font-outfit), ui-sans-serif, system-ui, sans-serif;
+
+  /* Shadex palette */
+  --color-ink: #1b1b1a;
+  --color-body: #55534e;
+  --color-muted: #77756f;
+  --color-body-strong: #3a3935;
+  --color-accent: #8a5a3c;
+  --color-alt: #f5f4f1;
+  --color-line: #eceae5;
+  --color-line-grey: #dedbd4;
+  --color-line-step: #d9d6cf;
+
+  --ease-curtain: cubic-bezier(0.77, 0, 0.18, 1);
+  --ease-underline: cubic-bezier(0.65, 0, 0.35, 1);
+}
+
+/* shadcn/ui tokens, mapped onto the Shadex palette. No radius anywhere. */
+:root {
+  --radius: 0px;
+  --background: #ffffff;
+  --foreground: #1b1b1a;
+  --card: #ffffff;
+  --card-foreground: #1b1b1a;
+  --popover: #ffffff;
+  --popover-foreground: #1b1b1a;
+  --primary: #1b1b1a;
+  --primary-foreground: #ffffff;
+  --secondary: #f5f4f1;
+  --secondary-foreground: #1b1b1a;
+  --muted: #f5f4f1;
+  --muted-foreground: #77756f;
+  --accent: #f5f4f1;
+  --accent-foreground: #8a5a3c;
+  --destructive: #b3261e;
+  --border: #eceae5;
+  --input: #eceae5;
+  --ring: #8a5a3c;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --radius-sm: var(--radius);
+  --radius-md: var(--radius);
+  --radius-lg: var(--radius);
+  --radius-xl: var(--radius);
+}
+
+/* Page container: 1440 max, fluid side gutter. */
+@utility shell {
+  width: 100%;
+  max-width: 1440px;
+  margin-inline: auto;
+  padding-inline: clamp(20px, 3vw, 40px);
+}
+
+/* Uppercase eyebrow label. */
+@utility eyebrow {
+  font-size: 11px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+}
+
+@layer base {
+  *,
+  ::after,
+  ::before {
+    border-color: var(--color-border);
+  }
+  html {
+    scroll-behavior: smooth;
+  }
+  body {
+    background: var(--background);
+    color: var(--foreground);
+    font-weight: 300;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  a {
+    transition: color 0.2s ease;
+  }
+  a:hover {
+    color: var(--color-accent);
+  }
+  ::selection {
+    background: var(--color-ink);
+    color: #fff;
+  }
+}
