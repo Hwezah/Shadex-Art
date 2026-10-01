@@ -34,25 +34,28 @@ export function Media({
   parallax = true,
   reveal = true,
 }: MediaProps) {
-  const { ref, style } = useReveal<HTMLDivElement>("image", index);
+  const { ref, animRef, style } = useReveal<HTMLDivElement, HTMLDivElement>("image", index);
   const reduce = useReducedMotion();
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start end", "end start"] });
   const y = useTransform(scrollYProgress, [0, 1], ["-24%", "24%"]);
   const glide = parallax && !reduce;
 
   return (
-    <div
-      ref={ref}
-      data-reveal-image=""
-      style={reveal ? style : undefined}
-      className={cn("relative min-w-0 overflow-hidden", className)}
-    >
-      <motion.div
-        className="absolute inset-0 will-change-transform"
-        style={glide ? { y, scale: 1.55 } : undefined}
+    // Outer frame is observed (never clipped); the inner layer carries the wipe.
+    <div ref={ref} className={cn("relative min-w-0 overflow-hidden", className)}>
+      <div
+        ref={animRef}
+        data-reveal-image=""
+        style={reveal ? style : undefined}
+        className="absolute inset-0 overflow-hidden"
       >
-        <Image src={src} alt={alt} fill sizes={sizes} preload={preload} className="object-cover" />
-      </motion.div>
+        <motion.div
+          className="absolute inset-0 will-change-transform"
+          style={glide ? { y, scale: 1.55 } : undefined}
+        >
+          <Image src={src} alt={alt} fill sizes={sizes} preload={preload} className="object-cover" />
+        </motion.div>
+      </div>
     </div>
   );
 }

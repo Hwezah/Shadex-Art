@@ -7,12 +7,15 @@ import { EASE_CURTAIN, EASE_SOFT, INTRO_MS, useIntroStart } from "./intro";
 type Kind = "text" | "image";
 
 const HIDDEN: Record<Kind, CSSProperties> = {
-  text: { opacity: 0, transform: "translate3d(0,24px,0)" },
-  image: { clipPath: "inset(0 0 100% 0)" },
+  text: { opacity: 0, transform: "translate3d(0px,24px,0px)" },
+  image: { clipPath: "inset(0% 0% 100% 0%)" },
 };
-const SHOWN: Record<Kind, Record<string, string | number>> = {
-  text: { opacity: 1, transform: "translate3d(0,0px,0)" },
-  image: { clipPath: "inset(0 0 0% 0)" },
+// Explicit [from, to] keyframes with identical structure. Without a `from`,
+// Motion reads the browser-normalised value (e.g. "inset(0px 0px 100%)"),
+// can't interpolate it against the target, and the frame never opens.
+const KEYFRAMES: Record<Kind, Record<string, (string | number)[]>> = {
+  text: { opacity: [0, 1], transform: ["translate3d(0px,24px,0px)", "translate3d(0px,0px,0px)"] },
+  image: { clipPath: ["inset(0% 0% 100% 0%)", "inset(0% 0% 0% 0%)"] },
 };
 
 /**
@@ -23,14 +26,19 @@ const SHOWN: Record<Kind, Record<string, string | number>> = {
  *   top-to-bottom / left-to-right by its viewport position
  * - never re-hides; skipped entirely under prefers-reduced-motion
  */
-export function useReveal<T extends HTMLElement>(kind: Kind, index = 0) {
+export function useReveal<T extends HTMLElement, A extends HTMLElement = T>(kind: Kind, index = 0) {
+  /** Observed for visibility. Must not carry the hidden clip-path itself:
+   *  IntersectionObserver honours the target's own clip-path, so a fully
+   *  clipped element never reports as in view. */
   const ref = useRef<T>(null);
+  /** Optional separate element that receives the animation (and `style`). */
+  const animRef = useRef<A>(null);
   const inView = useInView(ref, { once: true, margin: "0px 0px -10% 0px", amount: 0.05 });
   const reduce = useReducedMotion();
   const introStart = useIntroStart();
 
   useEffect(() => {
-    const el = ref.current;
+    const el = animRef.current ?? ref.current;
     if (!el || !inView || reduce) return;
     let delay = Math.min(index, 4) * 0.11 + (kind === "text" ? 0.08 : 0);
     const since = performance.now() - introStart;
@@ -43,14 +51,14 @@ export function useReveal<T extends HTMLElement>(kind: Kind, index = 0) {
     }
     animate(
       el,
-      SHOWN[kind],
+      KEYFRAMES[kind],
       kind === "image"
         ? { duration: 1.4, ease: EASE_CURTAIN, delay }
         : { duration: 1.1, ease: EASE_SOFT, delay },
     );
   }, [inView, reduce, index, kind, introStart]);
 
-  return { ref, style: reduce ? undefined : HIDDEN[kind] };
+  return { ref, animRef, style: reduce ? undefined : HIDDEN[kind] };
 }
 
 type RevealTag = "h1" | "h2" | "h3" | "p" | "span" | "div" | "figcaption";
