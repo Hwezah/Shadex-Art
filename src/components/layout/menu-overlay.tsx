@@ -111,7 +111,7 @@ export function MenuOverlay() {
               <a href={site.phone.whatsapp}>Message On WhatsApp</a>
             </Button>
             <Button asChild variant="outline" size="lg" className="max-sm:w-[80vw]">
-              <a href={site.phone.tel}>Call Shadex Art &amp; Interior</a>
+              <a href={site.phone.tel}>Call Shadex Studio!</a>
             </Button>
           </div>
         </div>
