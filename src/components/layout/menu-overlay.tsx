@@ -50,7 +50,7 @@ export function MenuOverlay() {
           </nav>
           <Label>About Shadex</Label>
           <p className="text-[clamp(22px,2.4vw,34px)] leading-[1.35] text-pretty">
-            An art and interior design studio in Kireka. We design and deliver complete interiors — gypsum
+            An Art and Interior Design Studio in Kireka. We design and deliver complete interiors — gypsum
             ceilings and partitions, painting and finishes, artworks and décor — for homes, offices and shops across
             Kampala.
           </p>
