@@ -28,6 +28,9 @@
 
   --font-sans: var(--font-outfit), ui-sans-serif, system-ui, sans-serif;
 
+  /* Fixed (not themed) near-black for UI that always sits on photos. */
+  --color-onyx: #1b1b1a;
+
   --ease-curtain: cubic-bezier(0.77, 0, 0.18, 1);
   --ease-underline: cubic-bezier(0.65, 0, 0.35, 1);
 }

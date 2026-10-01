@@ -5,14 +5,15 @@ import { cn } from "@/lib/utils";
 
 /** Rectangular buttons; hover inverts. Use `asChild` to wrap a <Link> or <a>. */
 const buttonVariants = cva(
-  "inline-flex shrink-0 items-center justify-center gap-2 whitespace-nowrap rounded-none font-normal transition-colors duration-300 focus-visible:outline-1 focus-visible:outline-offset-2 focus-visible:outline-ring disabled:pointer-events-none disabled:opacity-50",
+  "inline-flex shrink-0 items-center justify-center gap-2 whitespace-nowrap rounded-none font-normal [text-shadow:none] transition-colors duration-300 focus-visible:outline-1 focus-visible:outline-offset-2 focus-visible:outline-ring disabled:pointer-events-none disabled:opacity-50",
   {
     variants: {
       variant: {
         solid: "bg-ink text-background hover:bg-accent hover:text-background",
         outline: "border border-ink text-ink hover:bg-ink hover:text-background",
-        light: "bg-white text-ink hover:bg-ink hover:text-white",
-        "outline-light": "border border-white text-white hover:bg-white hover:text-ink",
+        // On-photo variants keep fixed colours in both themes.
+        light: "bg-white text-onyx hover:bg-onyx hover:text-white",
+        "outline-light": "border border-white text-white hover:bg-white hover:text-onyx",
       },
       size: {
         sm: "px-[18px] py-[11px] text-xs",
