@@ -15,7 +15,7 @@ const socials = [
 
 export function Footer() {
   return (
-    <footer id="contact" className="bg-white text-ink">
+    <footer id="contact" className="bg-background text-ink">
       <div className="shell flex flex-col gap-[clamp(40px,5vw,72px)] pt-[clamp(64px,7vw,110px)] pb-7">
         <div className="flex flex-col gap-7">
           <Logo size="footer" className="self-start max-sm:self-center" />

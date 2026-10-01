@@ -1,5 +1,8 @@
 @import "tailwindcss";
 
+/* Theme is set on <html data-theme="light|dark"> by an inline head script (no flash). */
+@custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
+
 /*
  * Breakpoints follow the design handoff:
  *   sm  ≥601  (≤600 = phone portrait: centred text, stacked asymmetric grids)
@@ -18,45 +21,76 @@
 
   --font-sans: var(--font-outfit), ui-sans-serif, system-ui, sans-serif;
 
-  /* Shadex palette */
-  --color-ink: #1b1b1a;
-  --color-body: #55534e;
-  --color-muted: #77756f;
-  --color-body-strong: #3a3935;
-  --color-accent: #8a5a3c;
-  --color-alt: #f5f4f1;
-  --color-line: #eceae5;
-  --color-line-grey: #dedbd4;
-  --color-line-step: #d9d6cf;
-
   --ease-curtain: cubic-bezier(0.77, 0, 0.18, 1);
   --ease-underline: cubic-bezier(0.65, 0, 0.35, 1);
 }
 
-/* shadcn/ui tokens, mapped onto the Shadex palette. No radius anywhere. */
-:root {
+/* Shadex palette + shadcn/ui tokens. No radius anywhere. */
+:root,
+[data-theme="light"] {
+  color-scheme: light;
+  --ink: #1b1b1a;
+  --body: #55534e;
+  --muted-text: #77756f;
+  --body-strong: #3a3935;
+  --brand: #8a5a3c;
+  --alt: #f5f4f1;
+  --line: #eceae5;
+  --line-grey: #dedbd4;
+  --line-step: #d9d6cf;
+
   --radius: 0px;
   --background: #ffffff;
-  --foreground: #1b1b1a;
+  --foreground: var(--ink);
   --card: #ffffff;
-  --card-foreground: #1b1b1a;
+  --card-foreground: var(--ink);
   --popover: #ffffff;
-  --popover-foreground: #1b1b1a;
-  --primary: #1b1b1a;
+  --popover-foreground: var(--ink);
+  --primary: var(--ink);
   --primary-foreground: #ffffff;
-  --secondary: #f5f4f1;
-  --secondary-foreground: #1b1b1a;
-  --muted: #f5f4f1;
-  --muted-foreground: #77756f;
-  --accent: #f5f4f1;
-  --accent-foreground: #8a5a3c;
+  --secondary: var(--alt);
+  --secondary-foreground: var(--ink);
+  --muted: var(--alt);
+  --muted-foreground: var(--muted-text);
+  --accent: var(--alt);
+  --accent-foreground: var(--brand);
   --destructive: #b3261e;
-  --border: #eceae5;
-  --input: #eceae5;
-  --ring: #8a5a3c;
+  --border: var(--line);
+  --input: var(--line-grey);
+  --ring: var(--brand);
+}
+
+/* Pitch-black dark theme. */
+[data-theme="dark"] {
+  color-scheme: dark;
+  --ink: #f2f0eb;
+  --body: #a9a59d;
+  --muted-text: #8c887f;
+  --body-strong: #c9c5bd;
+  --brand: #c8946b;
+  --alt: #0e0e0d;
+  --line: #242321;
+  --line-grey: #2c2b28;
+  --line-step: #33312e;
+
+  --background: #000000;
+  --card: #0e0e0d;
+  --popover: #0e0e0d;
+  --primary-foreground: #000000;
+  --destructive: #f2564b;
 }
 
 @theme inline {
+  --color-ink: var(--ink);
+  --color-body: var(--body);
+  --color-muted: var(--muted-text);
+  --color-body-strong: var(--body-strong);
+  --color-accent: var(--brand);
+  --color-alt: var(--alt);
+  --color-line: var(--line);
+  --color-line-grey: var(--line-grey);
+  --color-line-step: var(--line-step);
+
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-card: var(--card);
@@ -104,6 +138,7 @@
     scroll-behavior: smooth;
   }
   body {
+    transition: background-color 0.4s ease, color 0.4s ease;
     background: var(--background);
     color: var(--foreground);
     font-weight: 300;
@@ -117,7 +152,7 @@
     color: var(--color-accent);
   }
   ::selection {
-    background: var(--color-ink);
-    color: #fff;
+    background: var(--ink);
+    color: var(--background);
   }
 }

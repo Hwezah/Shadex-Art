@@ -2,7 +2,9 @@ import type { Metadata } from "next";
 import { Outfit } from "next/font/google";
 import { Footer } from "@/components/layout/footer";
 import { Header } from "@/components/layout/header";
+import { ThemeToggle } from "@/components/theme-toggle";
 import { MenuProvider } from "@/context/menu-context";
+import { ThemeProvider, themeScript } from "@/context/theme-context";
 import { site } from "@/lib/data/site";
 import "./globals.css";
 
@@ -19,20 +21,27 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html lang="en" className={outfit.variable}>
+    // suppressHydrationWarning: the head script may set data-theme before React hydrates.
+    <html lang="en" data-theme="light" className={outfit.variable} suppressHydrationWarning>
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: themeScript }} />
+      </head>
       <body>
         <noscript>
           {/* Reveal animations start hidden; show everything when JS is off. */}
           <style>{`[data-reveal],[data-reveal-image]{opacity:1!important;transform:none!important;clip-path:none!important}`}</style>
         </noscript>
-        <MenuProvider>
-          {/* overflow-x: clip (not hidden) so sticky columns keep working. */}
-          <div className="overflow-x-clip">
-            <Header />
-            <main>{children}</main>
-            <Footer />
-          </div>
-        </MenuProvider>
+        <ThemeProvider>
+          <MenuProvider>
+            {/* overflow-x: clip (not hidden) so sticky columns keep working. */}
+            <div className="overflow-x-clip">
+              <Header />
+              <main>{children}</main>
+              <Footer />
+            </div>
+            <ThemeToggle />
+          </MenuProvider>
+        </ThemeProvider>
       </body>
     </html>
   );

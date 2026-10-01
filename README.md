@@ -22,8 +22,11 @@ src/
     motion/                 intro curtain, <Reveal> (text fade-up), <Media> (wipe + parallax image)
     ui/                     shadcn-style primitives (Button, ArrowLink)
   context/menu-context.tsx  menu open state + body scroll lock
+  context/theme-context.tsx light/dark theme (data-theme on <html>, saved in localStorage)
   lib/data/                 typed content: services, projects, posts, reviews, studio, site
 ```
+
+**Theming:** palette colours are CSS variables in `src/app/globals.css`, with light (`:root`) and pitch-black dark (`[data-theme="dark"]`) values. An inline head script applies the saved theme before first paint. The toggle sits bottom-right on every page.
 
 The design handoff (tokens, motion specs, responsive rules) lives in [`docs/design-handoff.md`](docs/design-handoff.md).
 

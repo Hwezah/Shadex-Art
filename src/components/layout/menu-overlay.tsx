@@ -1,11 +1,13 @@
 "use client";
 
-import { X } from "lucide-react";
+import { ChevronDown, X } from "lucide-react";
 import Link from "next/link";
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { useMenu } from "@/context/menu-context";
 import { navLinks, site } from "@/lib/data/site";
-import { services } from "@/lib/data/services";
+import { serviceHref, services } from "@/lib/data/services";
+import { cn } from "@/lib/utils";
 import { Logo } from "./logo";
 
 const Label = ({ children }: { children: React.ReactNode }) => (
@@ -15,6 +17,7 @@ const Label = ({ children }: { children: React.ReactNode }) => (
 /** Full-screen menu (all breakpoints). At ≤640px it also carries the page links. */
 export function MenuOverlay() {
   const { open, setOpen } = useMenu();
+  const [servicesOpen, setServicesOpen] = useState(false);
   if (!open) return null;
 
   return (
@@ -22,7 +25,7 @@ export function MenuOverlay() {
       role="dialog"
       aria-modal="true"
       aria-label="Menu"
-      className="fixed inset-0 z-50 flex flex-col overflow-auto bg-white text-ink"
+      className="fixed inset-0 z-50 flex flex-col overflow-auto bg-background text-ink"
     >
       <div className="shell flex items-center justify-between gap-6 py-5">
         <Logo />
@@ -42,11 +45,40 @@ export function MenuOverlay() {
             aria-label="Mobile"
             className="flex flex-col items-start gap-4 border-b border-line pb-8 text-[32px] nav:hidden"
           >
-            {navLinks.map((l) => (
-              <Link key={l.key} href={l.href}>
-                {l.label}
-              </Link>
-            ))}
+            {navLinks.map((l) =>
+              l.key === "services" ? (
+                // Services expands its list in place rather than navigating.
+                <div key={l.key} className="flex flex-col items-start">
+                  <button
+                    type="button"
+                    onClick={() => setServicesOpen((o) => !o)}
+                    aria-expanded={servicesOpen}
+                    className="inline-flex cursor-pointer items-center gap-2 transition-colors hover:text-accent"
+                  >
+                    {l.label}
+                    <ChevronDown
+                      size={24}
+                      strokeWidth={1}
+                      aria-hidden
+                      className={cn("transition-transform duration-300", servicesOpen && "rotate-180")}
+                    />
+                  </button>
+                  {servicesOpen && (
+                    <ul className="mt-3 flex flex-col gap-2.5 border-l border-line pl-4 text-lg">
+                      {services.map((sv) => (
+                        <li key={sv.slug}>
+                          <Link href={serviceHref(sv.slug)}>{sv.title}</Link>
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+                </div>
+              ) : (
+                <Link key={l.key} href={l.href}>
+                  {l.label}
+                </Link>
+              ),
+            )}
           </nav>
           <Label>About Shadex</Label>
           <p className="text-[clamp(22px,2.4vw,34px)] leading-[1.35] text-pretty">
@@ -73,12 +105,13 @@ export function MenuOverlay() {
               {services.map((s) => s.title).join(" · ")}
             </span>
           </div>
-          <div className="flex flex-wrap gap-3 max-sm:justify-center">
-            <Button asChild variant="solid" size="lg">
-              <a href={site.phone.whatsapp}>Message on WhatsApp</a>
+          {/* Phone portrait: stacked, centred, 80vw each. */}
+          <div className="flex flex-wrap gap-3 max-sm:flex-col max-sm:items-center">
+            <Button asChild variant="solid" size="lg" className="max-sm:w-[80vw]">
+              <a href={site.phone.whatsapp}>Message On WhatsApp</a>
             </Button>
-            <Button asChild variant="outline" size="lg">
-              <a href={site.phone.tel}>Call now</a>
+            <Button asChild variant="outline" size="lg" className="max-sm:w-[80vw]">
+              <a href={site.phone.tel}>Call Shadex Art &amp; Interior</a>
             </Button>
           </div>
         </div>

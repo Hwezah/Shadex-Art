@@ -9,8 +9,8 @@ const buttonVariants = cva(
   {
     variants: {
       variant: {
-        solid: "bg-ink text-white hover:bg-accent hover:text-white",
-        outline: "border border-ink text-ink hover:bg-ink hover:text-white",
+        solid: "bg-ink text-background hover:bg-accent hover:text-background",
+        outline: "border border-ink text-ink hover:bg-ink hover:text-background",
         light: "bg-white text-ink hover:bg-ink hover:text-white",
         "outline-light": "border border-white text-white hover:bg-white hover:text-ink",
       },
