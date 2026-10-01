@@ -19,8 +19,13 @@ const buttonVariants = cva(
         md: "px-[22px] py-[13px] text-[13px]",
         lg: "px-6 py-3.5 text-[13px]",
       },
+      /** A button with no sibling button: 80vw wide and centred on phone portrait. */
+      solo: {
+        true: "max-sm:w-[80vw] max-sm:self-center",
+        false: "",
+      },
     },
-    defaultVariants: { variant: "outline", size: "md" },
+    defaultVariants: { variant: "outline", size: "md", solo: false },
   },
 );
 
@@ -28,11 +33,12 @@ function Button({
   className,
   variant,
   size,
+  solo,
   asChild = false,
   ...props
 }: React.ComponentProps<"button"> & VariantProps<typeof buttonVariants> & { asChild?: boolean }) {
   const Comp = asChild ? Slot : "button";
-  return <Comp data-slot="button" className={cn(buttonVariants({ variant, size, className }))} {...props} />;
+  return <Comp data-slot="button" className={cn(buttonVariants({ variant, size, solo, className }))} {...props} />;
 }
 
 export { Button, buttonVariants };

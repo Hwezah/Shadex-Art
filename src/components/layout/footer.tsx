@@ -46,7 +46,7 @@ export function Footer() {
               Call Shadex.
             </h2>
             {/* TODO: swap for a call-back form once a submission target exists. */}
-            <Button asChild variant="outline" size="sm" className="self-start max-sm:self-center">
+            <Button asChild variant="outline" size="sm" solo className="self-start">
               <a href={site.phone.tel}>Request a call back</a>
             </Button>
           </div>

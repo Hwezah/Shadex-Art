@@ -2,21 +2,43 @@
 
 import { animate, useInView, useReducedMotion } from "motion/react";
 import { createElement, useEffect, useRef, type CSSProperties } from "react";
-import { EASE_CURTAIN, EASE_SOFT, INTRO_MS, useIntroStart } from "./intro";
+import { EASE_CURTAIN, EASE_SOFT } from "./easing";
+import { INTRO_MS, useIntroStart } from "./intro";
 
 type Kind = "text" | "image";
 
-const HIDDEN: Record<Kind, CSSProperties> = {
-  text: { opacity: 0, transform: "translate3d(0px,24px,0px)" },
-  image: { clipPath: "inset(0% 0% 100% 0%)" },
+/** Which way an image wipe travels: "down" opens top → bottom, "up" bottom → top. */
+export type WipeDirection = "down" | "up";
+
+export type RevealOptions = {
+  /** Position among siblings, for the 110ms stagger. */
+  index?: number;
+  direction?: WipeDirection;
+  /** Seconds. Defaults: 1.4 image, 1.1 text. */
+  duration?: number;
+  ease?: readonly [number, number, number, number];
 };
+
+const CLIP_HIDDEN: Record<WipeDirection, string> = {
+  down: "inset(0% 0% 100% 0%)",
+  up: "inset(100% 0% 0% 0%)",
+};
+const CLIP_SHOWN = "inset(0% 0% 0% 0%)";
+
+function hiddenStyle(kind: Kind, direction: WipeDirection): CSSProperties {
+  return kind === "image"
+    ? { clipPath: CLIP_HIDDEN[direction] }
+    : { opacity: 0, transform: "translate3d(0px,24px,0px)" };
+}
+
 // Explicit [from, to] keyframes with identical structure. Without a `from`,
 // Motion reads the browser-normalised value (e.g. "inset(0px 0px 100%)"),
 // can't interpolate it against the target, and the frame never opens.
-const KEYFRAMES: Record<Kind, Record<string, (string | number)[]>> = {
-  text: { opacity: [0, 1], transform: ["translate3d(0px,24px,0px)", "translate3d(0px,0px,0px)"] },
-  image: { clipPath: ["inset(0% 0% 100% 0%)", "inset(0% 0% 0% 0%)"] },
-};
+function keyframes(kind: Kind, direction: WipeDirection): Record<string, (string | number)[]> {
+  return kind === "image"
+    ? { clipPath: [CLIP_HIDDEN[direction], CLIP_SHOWN] }
+    : { opacity: [0, 1], transform: ["translate3d(0px,24px,0px)", "translate3d(0px,0px,0px)"] };
+}
 
 /**
  * Scroll reveal ported from shadex-motion.js.
@@ -26,7 +48,10 @@ const KEYFRAMES: Record<Kind, Record<string, (string | number)[]>> = {
  *   top-to-bottom / left-to-right by its viewport position
  * - never re-hides; skipped entirely under prefers-reduced-motion
  */
-export function useReveal<T extends HTMLElement, A extends HTMLElement = T>(kind: Kind, index = 0) {
+export function useReveal<T extends HTMLElement, A extends HTMLElement = T>(
+  kind: Kind,
+  { index = 0, direction = "down", duration, ease }: RevealOptions = {},
+) {
   /** Observed for visibility. Must not carry the hidden clip-path itself:
    *  IntersectionObserver honours the target's own clip-path, so a fully
    *  clipped element never reports as in view. */
@@ -49,16 +74,14 @@ export function useReveal<T extends HTMLElement, A extends HTMLElement = T>(kind
         Math.min(Math.max(r.top, 0) / window.innerHeight, 1) * 0.42 +
         (r.left / window.innerWidth) * 0.16;
     }
-    animate(
-      el,
-      KEYFRAMES[kind],
-      kind === "image"
-        ? { duration: 1.4, ease: EASE_CURTAIN, delay }
-        : { duration: 1.1, ease: EASE_SOFT, delay },
-    );
-  }, [inView, reduce, index, kind, introStart]);
+    animate(el, keyframes(kind, direction), {
+      duration: duration ?? (kind === "image" ? 1.4 : 1.1),
+      ease: ease ?? (kind === "image" ? EASE_CURTAIN : EASE_SOFT),
+      delay,
+    });
+  }, [inView, reduce, index, kind, introStart, direction, duration, ease]);
 
-  return { ref, animRef, style: reduce ? undefined : HIDDEN[kind] };
+  return { ref, animRef, style: reduce ? undefined : hiddenStyle(kind, direction) };
 }
 
 type RevealTag = "h1" | "h2" | "h3" | "p" | "span" | "div" | "figcaption";
@@ -71,6 +94,6 @@ type RevealProps = React.HTMLAttributes<HTMLElement> & {
 
 /** Text block that fades up into view. */
 export function Reveal({ as = "div", index = 0, style, ...rest }: RevealProps) {
-  const { ref, style: hidden } = useReveal<HTMLElement>("text", index);
+  const { ref, style: hidden } = useReveal<HTMLElement>("text", { index });
   return createElement(as, { ...rest, ref, "data-reveal": "", style: { ...hidden, ...style } });
 }

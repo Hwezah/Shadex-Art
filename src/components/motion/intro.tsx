@@ -2,8 +2,6 @@
 
 import { createContext, useContext, useState } from "react";
 
-export const EASE_CURTAIN = [0.77, 0, 0.18, 1] as const;
-export const EASE_SOFT = [0.22, 0.61, 0.36, 1] as const;
 /** Short settle before first-screen reveals start (ms). */
 export const INTRO_MS = 250;
 

@@ -9,7 +9,7 @@ export default function NotFound() {
       <p className="max-w-[440px] text-sm leading-[1.75] text-body">
         The page you were looking for has moved or was never built. Try the studio or our recent work.
       </p>
-      <div className="flex flex-wrap gap-3">
+      <div className="flex flex-wrap gap-3 max-sm:justify-center">
         <Button asChild variant="solid" size="md">
           <Link href="/">Back to the studio</Link>
         </Button>

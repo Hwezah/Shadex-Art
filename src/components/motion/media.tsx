@@ -3,7 +3,7 @@
 import Image from "next/image";
 import { motion, useReducedMotion, useScroll, useTransform } from "motion/react";
 import { cn } from "@/lib/utils";
-import { useReveal } from "./reveal";
+import { useReveal, type RevealOptions } from "./reveal";
 
 type MediaProps = {
   src: string;
@@ -20,6 +20,8 @@ type MediaProps = {
   reveal?: boolean;
   /** Rendered above the photo inside the wipe, so it reveals with it (e.g. a scrim). */
   overlay?: React.ReactNode;
+  /** Wipe direction and timing overrides. */
+  wipe?: Omit<RevealOptions, "index">;
 };
 
 /**
@@ -36,8 +38,9 @@ export function Media({
   parallax = true,
   reveal = true,
   overlay,
+  wipe,
 }: MediaProps) {
-  const { ref, animRef, style } = useReveal<HTMLDivElement, HTMLDivElement>("image", index);
+  const { ref, animRef, style } = useReveal<HTMLDivElement, HTMLDivElement>("image", { index, ...wipe });
   const reduce = useReducedMotion();
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start end", "end start"] });
   const y = useTransform(scrollYProgress, [0, 1], ["-24%", "24%"]);

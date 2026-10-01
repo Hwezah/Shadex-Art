@@ -79,7 +79,7 @@ export default async function ServicePage({ params }: PageProps<"/services/[slug
                 </li>
               ))}
             </ol>
-            <Button asChild variant="outline" size="md" className="self-start max-sm:self-center">
+            <Button asChild variant="outline" size="md" solo className="self-start">
               <Link href="#contact">Get a quote</Link>
             </Button>
           </div>

@@ -73,7 +73,7 @@ export function MenuOverlay() {
               {services.map((s) => s.title).join(" · ")}
             </span>
           </div>
-          <div className="flex flex-wrap gap-3">
+          <div className="flex flex-wrap gap-3 max-sm:justify-center">
             <Button asChild variant="solid" size="lg">
               <a href={site.phone.whatsapp}>Message on WhatsApp</a>
             </Button>

@@ -1,7 +1,7 @@
 import { ImageIcon } from "lucide-react";
 import Link from "next/link";
+import { EASE_SMOOTH } from "@/components/motion/easing";
 import { Media } from "@/components/motion/media";
-import Image from "next/image";
 import { Reveal } from "@/components/motion/reveal";
 import { ArrowLink } from "@/components/ui/arrow-link";
 import { Button } from "@/components/ui/button";
@@ -11,21 +11,22 @@ import { areas, team, values } from "@/lib/data/studio";
 import { cn } from "@/lib/utils";
 
 const section = "py-[clamp(80px,9vw,140px)]";
+const HERO_WIPE = { duration: 2.2, ease: EASE_SMOOTH };
 
 export default function StudioPage() {
   return (
     <>
       {/* Hero — pulled up under the transparent header. */}
       <section className="relative -mt-[84px] mb-[clamp(80px,9vw,140px)] flex h-screen min-h-[600px] items-center overflow-hidden bg-[#2b2622]">
-        {/* A finished apartment interior sits behind the studio photo until it wipes in. */}
-        <Image
+        {/* First load: a finished apartment rises from below while the studio photo
+            descends from above — two wipes crossing, same start and timing. */}
+        <Media
           src={pexels(1457842)}
-          alt=""
-          aria-hidden
-          fill
+          className="absolute inset-0"
           sizes="100vw"
           preload
-          className="object-cover"
+          parallax={false}
+          wipe={{ direction: "up", ...HERO_WIPE }}
         />
         <Media
           src={pexels(10322846)}
@@ -33,6 +34,7 @@ export default function StudioPage() {
           className="absolute inset-0"
           sizes="100vw"
           preload
+          wipe={{ direction: "down", ...HERO_WIPE }}
           overlay={
             <div
               aria-hidden
