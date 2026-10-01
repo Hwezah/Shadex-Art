@@ -9,7 +9,8 @@ export const values = [
 
 // TODO: real names and photos from the client (photo: path under /public/team).
 export const team: { name: string; role: string; photo?: string }[] = [
-  { name: "Name", role: "Founder & lead designer" },
+  // TODO: confirm spelling of "Dauce" with the client.
+  { name: "Dauce Bukenya", role: "Founder & lead designer" },
   { name: "Name", role: "Gypsum supervisor" },
   { name: "Name", role: "Painting lead" },
   { name: "Name", role: "Artist & stylist" },
