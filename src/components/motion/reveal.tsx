@@ -22,7 +22,7 @@ const KEYFRAMES: Record<Kind, Record<string, (string | number)[]>> = {
  * Scroll reveal ported from shadex-motion.js.
  * - text fades up 24px (1.1s), images wipe open top → bottom (1.4s)
  * - siblings stagger by `index` × 110ms (max 4)
- * - anything on screen at page open waits for the curtain, then builds
+ * - anything on screen at page open reveals after a short settle, building
  *   top-to-bottom / left-to-right by its viewport position
  * - never re-hides; skipped entirely under prefers-reduced-motion
  */

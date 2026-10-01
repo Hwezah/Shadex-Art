@@ -1,7 +1,7 @@
 import { ImageIcon } from "lucide-react";
 import Link from "next/link";
 import { Media } from "@/components/motion/media";
-import { PaintCanvas } from "@/components/motion/paint-canvas";
+import Image from "next/image";
 import { Reveal } from "@/components/motion/reveal";
 import { ArrowLink } from "@/components/ui/arrow-link";
 import { Button } from "@/components/ui/button";
@@ -16,9 +16,17 @@ export default function StudioPage() {
   return (
     <>
       {/* Hero — pulled up under the transparent header. */}
-      <section className="relative -mt-[84px] mb-[clamp(80px,9vw,140px)] flex h-screen min-h-[600px] items-center overflow-hidden">
-        {/* A splashed painter's canvas sits behind the photo until it wipes in. */}
-        <PaintCanvas className="absolute inset-0" />
+      <section className="relative -mt-[84px] mb-[clamp(80px,9vw,140px)] flex h-screen min-h-[600px] items-center overflow-hidden bg-[#2b2622]">
+        {/* A finished apartment interior sits behind the studio photo until it wipes in. */}
+        <Image
+          src={pexels(1457842)}
+          alt=""
+          aria-hidden
+          fill
+          sizes="100vw"
+          preload
+          className="object-cover"
+        />
         <Media
           src={pexels(10322846)}
           alt="Shadex art studio with a painting on an easel"
@@ -141,7 +149,7 @@ export default function StudioPage() {
 
       {/* Full-bleed band with drafting lines */}
       <section className="relative h-[clamp(360px,52vw,760px)] overflow-hidden">
-        <Media src={pexels(1457842)} alt="Finished bedroom" className="absolute inset-0" sizes="100vw" />
+        <Media src={pexels(1643383)} alt="Finished living room" className="absolute inset-0" sizes="100vw" />
         <div aria-hidden className="pointer-events-none absolute inset-0">
           <span className="absolute inset-y-0 left-[10%] w-px bg-white/28" />
           <span className="absolute inset-y-0 right-[10%] w-px bg-white/28" />

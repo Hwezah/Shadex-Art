@@ -23,7 +23,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       <body>
         <noscript>
           {/* Reveal animations start hidden; show everything when JS is off. */}
-          <style>{`[data-reveal],[data-reveal-image]{opacity:1!important;transform:none!important;clip-path:none!important}[data-curtain]{display:none!important}`}</style>
+          <style>{`[data-reveal],[data-reveal-image]{opacity:1!important;transform:none!important;clip-path:none!important}`}</style>
         </noscript>
         <MenuProvider>
           {/* overflow-x: clip (not hidden) so sticky columns keep working. */}
