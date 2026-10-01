@@ -241,12 +241,12 @@ function ChoiceGroup({
   children: React.ReactNode;
 }) {
   return (
-    <fieldset aria-describedby={error ? `${id}-error` : undefined} className="flex flex-col gap-3.5">
-      <div className="flex items-baseline justify-between gap-3">
+    <fieldset aria-describedby={error ? `${id}-error` : undefined} className="flex flex-col gap-3.5 max-sm:[&>p]:text-center">
+      <div className="flex items-baseline justify-between gap-3 max-sm:justify-center">
         <legend className="text-[11px] tracking-[0.2em] text-muted uppercase">{legend}</legend>
         {hint && <span className="text-[11px] text-muted">{hint}</span>}
       </div>
-      <div className={cn("flex flex-wrap gap-2", error && "[&_span]:border-destructive/60")}>{children}</div>
+      <div className={cn("flex flex-wrap gap-2 max-sm:justify-center", error && "[&_span]:border-destructive/60")}>{children}</div>
       <FieldError id={`${id}-error`}>{error}</FieldError>
     </fieldset>
   );
