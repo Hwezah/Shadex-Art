@@ -54,10 +54,11 @@ export function Header() {
     <>
       <header
         className={cn(
-          "sticky top-0 z-30 transition-[background-color,color,box-shadow] duration-[450ms] ease-out",
+          "sticky top-0 z-30 backdrop-blur-md backdrop-saturate-150 transition-[background-color,color,box-shadow] duration-[450ms] ease-out",
           solid
-            ? "bg-white/96 text-ink shadow-[0_1px_0_rgba(0,0,0,0.06)] backdrop-blur-sm"
-            : "bg-white/0 text-white",
+            ? "bg-white/96 text-ink shadow-[0_1px_0_rgba(0,0,0,0.06)]"
+            : // Frosted glass over the hero: light tint + blur, hairline edge.
+              "bg-white/10 text-white shadow-[0_1px_0_rgba(255,255,255,0.18)]",
         )}
       >
         <div className="shell flex items-center justify-between gap-6 py-5">
