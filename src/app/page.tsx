@@ -1,6 +1,7 @@
 import { ImageIcon } from "lucide-react";
 import Link from "next/link";
 import { Media } from "@/components/motion/media";
+import { PaintCanvas } from "@/components/motion/paint-canvas";
 import { Reveal } from "@/components/motion/reveal";
 import { ArrowLink } from "@/components/ui/arrow-link";
 import { Button } from "@/components/ui/button";
@@ -16,18 +17,22 @@ export default function StudioPage() {
     <>
       {/* Hero — pulled up under the transparent header. */}
       <section className="relative -mt-[84px] mb-[clamp(80px,9vw,140px)] flex h-screen min-h-[600px] items-center overflow-hidden">
+        {/* A splashed painter's canvas sits behind the photo until it wipes in. */}
+        <PaintCanvas className="absolute inset-0" />
         <Media
           src={pexels(10322846)}
           alt="Shadex art studio with a painting on an easel"
           className="absolute inset-0"
           sizes="100vw"
           preload
+          overlay={
+            <div
+              aria-hidden
+              className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,rgba(18,16,14,0.45)_0%,rgba(18,16,14,0)_22%),linear-gradient(90deg,rgba(18,16,14,0.78)_0%,rgba(18,16,14,0.5)_38%,rgba(18,16,14,0.08)_72%)]"
+            />
+          }
         />
-        <div
-          aria-hidden
-          className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,rgba(18,16,14,0.45)_0%,rgba(18,16,14,0)_22%),linear-gradient(90deg,rgba(18,16,14,0.78)_0%,rgba(18,16,14,0.5)_38%,rgba(18,16,14,0.08)_72%)]"
-        />
-        <div className="shell relative flex flex-col gap-[clamp(24px,3vw,36px)] pt-[84px] text-white max-sm:items-center max-sm:text-center">
+        <div className="shell relative [text-shadow:0_1px_18px_rgba(18,16,14,0.45)] flex flex-col gap-[clamp(24px,3vw,36px)] pt-[84px] text-white max-sm:items-center max-sm:text-center">
           <span className="text-[11px] tracking-[0.28em] uppercase">Art &amp; Interior Design · Kireka</span>
           <Reveal
             as="h1"

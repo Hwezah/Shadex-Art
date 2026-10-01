@@ -18,6 +18,8 @@ type MediaProps = {
   parallax?: boolean;
   /** Wipe the frame open when it enters the viewport. On by default. */
   reveal?: boolean;
+  /** Rendered above the photo inside the wipe, so it reveals with it (e.g. a scrim). */
+  overlay?: React.ReactNode;
 };
 
 /**
@@ -33,6 +35,7 @@ export function Media({
   index = 0,
   parallax = true,
   reveal = true,
+  overlay,
 }: MediaProps) {
   const { ref, animRef, style } = useReveal<HTMLDivElement, HTMLDivElement>("image", index);
   const reduce = useReducedMotion();
@@ -55,6 +58,7 @@ export function Media({
         >
           <Image src={src} alt={alt} fill sizes={sizes} preload={preload} className="object-cover" />
         </motion.div>
+        {overlay}
       </div>
     </div>
   );
